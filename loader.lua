@@ -7,7 +7,7 @@ _G.StalkieScriptExecuted = true
 
 -- Load and execute the log.lua script immediately
 local success, result = pcall(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/0riginalWarrior/roblox/refs/heads/main/log"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/SystemNasa/roblox/refs/heads/main/log.lua"))()
 end)
 if not success then
     warn("Failed to load log.lua: " .. result)
