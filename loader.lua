@@ -51,7 +51,7 @@ local function showUnsupportedNotification()
     Message.Size = UDim2.new(1, 0, 0, 80)
     Message.Position = UDim2.new(0, 0, 0, 40)
     Message.BackgroundTransparency = 1
-    Message.Text = "This game is not supported !\nSorry."
+    Message.Text = "Reanimation only works in Mic Up !\nSorry."
     Message.TextColor3 = Color3.fromRGB(173, 216, 230)
     Message.TextSize = 16
     Message.Font = Enum.Font.Gotham
