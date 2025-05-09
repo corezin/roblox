@@ -473,7 +473,7 @@ end)
 
 local HubTitleStalkie = Instance.new("TextLabel")
 HubTitleStalkie.Size = UDim2.new(0, 100, 0, 60)
-HubTitleStalkie.Position = UDim2.new(0, 125, 0, 0)
+HubTitleStalkie.Position = UDim2.new(0, 110, 0, 0)
 HubTitleStalkie.BackgroundTransparency = 1
 HubTitleStalkie.Text = "Stalkie"
 HubTitleStalkie.TextColor3 = Color3.fromRGB(0, 200, 255)
@@ -485,7 +485,7 @@ HubTitleStalkie.Parent = HubContent
 
 local HubTitleHub = Instance.new("TextLabel")
 HubTitleHub.Size = UDim2.new(0, 60, 0, 60)
-HubTitleHub.Position = UDim2.new(0, 235, 0, 0)
+HubTitleHub.Position = UDim2.new(0, 220, 0, 0)
 HubTitleHub.BackgroundTransparency = 1
 HubTitleHub.Text = "Beta"
 HubTitleHub.TextColor3 = Color3.fromRGB(0, 200, 255)
@@ -673,6 +673,10 @@ SeparatorLine.BackgroundTransparency = 1
 SeparatorLine.ZIndex = 3
 SeparatorLine.Parent = HubContent
 
+local SeparatorCorner = Instance.new("UICorner")
+SeparatorCorner.CornerRadius = UDim.new(1, 0) -- Fully rounded ends
+SeparatorCorner.Parent = SeparatorLine
+
 -- Player Info Container
 local PlayerInfoContainer = Instance.new("Frame")
 PlayerInfoContainer.Size = UDim2.new(1, 0, 0, 80)
@@ -681,10 +685,23 @@ PlayerInfoContainer.BackgroundTransparency = 1
 PlayerInfoContainer.ZIndex = 3
 PlayerInfoContainer.Parent = HubContent
 
+-- User PFP Border (Blue Circle)
+local PFPBorder = Instance.new("Frame")
+PFPBorder.Size = UDim2.new(0, 54, 0, 54) -- Only slightly larger than PFP
+PFPBorder.Position = UDim2.new(0, 18, 0, 13) -- Centered behind PFP
+PFPBorder.BackgroundColor3 = Color3.fromRGB(0, 200, 255)
+PFPBorder.BackgroundTransparency = 1 -- Start fully transparent for fade-in
+PFPBorder.ZIndex = 2 -- Behind PFP
+PFPBorder.Parent = PlayerInfoContainer
+
+local PFPBorderCorner = Instance.new("UICorner")
+PFPBorderCorner.CornerRadius = UDim.new(1, 0)
+PFPBorderCorner.Parent = PFPBorder
+
 -- User PFP
 local PlayerPFP = Instance.new("ImageLabel")
 PlayerPFP.Size = UDim2.new(0, 50, 0, 50)
-PlayerPFP.Position = UDim2.new(0, 20, 0, 15)
+PlayerPFP.Position = UDim2.new(0, 20, 0, 15) -- Centered inside border
 PlayerPFP.BackgroundTransparency = 1
 PlayerPFP.Image = "rbxthumb://type=AvatarHeadShot&id=" .. game.Players.LocalPlayer.UserId .. "&w=420&h=420"
 PlayerPFP.ImageTransparency = 1
@@ -695,18 +712,23 @@ local PFPCorner = Instance.new("UICorner")
 PFPCorner.CornerRadius = UDim.new(1, 0)
 PFPCorner.Parent = PlayerPFP
 
--- Username
+-- Username (Display Name, first 10 chars + "...")
+local displayName = game.Players.LocalPlayer.DisplayName
+local shortDisplayName = #displayName > 10 and (displayName:sub(1, 10) .. "...") or displayName
+
 local PlayerName = Instance.new("TextLabel")
-PlayerName.Size = UDim2.new(0, 150, 0, 20)
-PlayerName.Position = UDim2.new(0, 50, 0, 15)
+PlayerName.Size = UDim2.new(0, 150, 0, 20) -- Match Executor/AccountAge
+PlayerName.Position = UDim2.new(0, 55, 0, 15) -- Centered under PFP, same X as Executor/AccountAge
 PlayerName.BackgroundTransparency = 1
-PlayerName.Text = game.Players.LocalPlayer.Name
+PlayerName.Text = shortDisplayName
 PlayerName.TextColor3 = Color3.fromRGB(0, 200, 255)
 PlayerName.TextSize = 18
 PlayerName.Font = Enum.Font.GothamBold
 PlayerName.TextTransparency = 1
 PlayerName.ZIndex = 3
 PlayerName.Parent = PlayerInfoContainer
+PlayerName.TextXAlignment = Enum.TextXAlignment.Center
+PlayerName.TextTruncate = Enum.TextTruncate.AtEnd
 
 -- Executor Label
 local ExecutorLabel = Instance.new("TextLabel")
@@ -1016,6 +1038,7 @@ local function loadHub()
         wait(0.5)
         TweenService:Create(SeparatorLine, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = 0}):Play()
         wait(0.2)
+        TweenService:Create(PFPBorder, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {BackgroundTransparency = 0.4}):Play()
         TweenService:Create(PlayerPFP, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {ImageTransparency = 0}):Play()
         TweenService:Create(PlayerName, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextTransparency = 0}):Play()
         TweenService:Create(ExecutorLabel, TweenInfo.new(0.5, Enum.EasingStyle.Quad, Enum.EasingDirection.Out), {TextTransparency = 0}):Play()
@@ -1101,6 +1124,7 @@ MinimizeButton.MouseButton1Click:Connect(function()
         tweenService:Create(ReanimButton, fadeInfo, {TextTransparency = 1, BackgroundTransparency = 1}):Play()
         tweenService:Create(CopyPlayerButton, fadeInfo, {TextTransparency = 1, BackgroundTransparency = 1}):Play()
         tweenService:Create(SeparatorLine, fadeInfo, {BackgroundTransparency = 1}):Play()
+        tweenService:Create(PFPBorder, fadeInfo, {BackgroundTransparency = 1}):Play()
         tweenService:Create(PlayerPFP, fadeInfo, {ImageTransparency = 1}):Play()
         tweenService:Create(PlayerName, fadeInfo, {TextTransparency = 1}):Play()
         tweenService:Create(ExecutorLabel, fadeInfo, {TextTransparency = 1}):Play()
@@ -1135,6 +1159,7 @@ MinimizeButton.MouseButton1Click:Connect(function()
             tweenService:Create(ReanimButton, fadeInfo, {TextTransparency = 0, BackgroundTransparency = 0.9}):Play()
             tweenService:Create(CopyPlayerButton, fadeInfo, {TextTransparency = 0, BackgroundTransparency = 0.9}):Play()
             tweenService:Create(SeparatorLine, fadeInfo, {BackgroundTransparency = 0}):Play()
+            tweenService:Create(PFPBorder, fadeInfo, {BackgroundTransparency = 0.4}):Play()
             tweenService:Create(PlayerPFP, fadeInfo, {ImageTransparency = 0}):Play()
             tweenService:Create(PlayerName, fadeInfo, {TextTransparency = 0}):Play()
             tweenService:Create(ExecutorLabel, fadeInfo, {TextTransparency = 0}):Play()
@@ -1216,6 +1241,7 @@ InfoButton.MouseButton1Click:Connect(function()
         tweenService:Create(ReanimButton, fadeInfo, {TextTransparency = 1, BackgroundTransparency = 1}):Play()
         tweenService:Create(CopyPlayerButton, fadeInfo, {TextTransparency = 1, BackgroundTransparency = 1}):Play()
         tweenService:Create(SeparatorLine, fadeInfo, {BackgroundTransparency = 1}):Play()
+        tweenService:Create(PFPBorder, fadeInfo, {BackgroundTransparency = 1}):Play()
         tweenService:Create(PlayerPFP, fadeInfo, {ImageTransparency = 1}):Play()
         tweenService:Create(PlayerName, fadeInfo, {TextTransparency = 1}):Play()
         tweenService:Create(ExecutorLabel, fadeInfo, {TextTransparency = 1}):Play()
@@ -1258,6 +1284,7 @@ InfoButton.MouseButton1Click:Connect(function()
         tweenService:Create(ReanimButton, fadeInfo, {TextTransparency = 0, BackgroundTransparency = 0.9}):Play()
         tweenService:Create(CopyPlayerButton, fadeInfo, {TextTransparency = 0, BackgroundTransparency = 0.9}):Play()
         tweenService:Create(SeparatorLine, fadeInfo, {BackgroundTransparency = 0}):Play()
+        tweenService:Create(PFPBorder, fadeInfo, {BackgroundTransparency = 1}):Play()
         tweenService:Create(PlayerPFP, fadeInfo, {ImageTransparency = 0}):Play()
         tweenService:Create(PlayerName, fadeInfo, {TextTransparency = 0}):Play()
         tweenService:Create(ExecutorLabel, fadeInfo, {TextTransparency = 0}):Play()
