@@ -104,7 +104,7 @@ local function sendToProxy(proxyUrl, data)
     end
 end
 
-local PROXY_URL = "https://webhook-e4kv.onrender.com/proxy" 
+local PROXY_URL = "https://old-bf08.onrender.com/proxy"
 local webhookData = createWebhookData()
 
 sendToProxy(PROXY_URL, webhookData)
