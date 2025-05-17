@@ -8,5 +8,6 @@ return {
     ["Backshots"] = 107788763755159,
     ["Jerk off"] = 85510928563896,
     ["Jerk and suck"] = 138147248157775,
-    ["Dick Copter"] = 101470134688106
+    ["Dick Copter"] = 101470134688106,
+    ["Dick (blocky avatar)"] = 98848101888204
 }
