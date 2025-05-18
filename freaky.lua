@@ -9,5 +9,6 @@ return {
     ["Jerk off"] = 85510928563896,
     ["Jerk and suck"] = 138147248157775,
     ["Dick Copter"] = 101470134688106,
-    ["Dick (blocky avatar)"] = 98848101888204
+    ["Ultra twerk"] = 123845287065196,
+    ["Lay fuck"] = 90477619868120
 }
