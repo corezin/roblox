@@ -885,5 +885,6 @@ return {
     ["Rasputin"] = 132179495720233,
     ["Made you look"] = 135718096107662,
     ["Still into you"] = 140467335234413,
-    ["Run meme"] = 12474655235
+    ["Run meme"] = 12474655235,
+    ["Pole dance"] = 16331781302
 }
