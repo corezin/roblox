@@ -7,7 +7,7 @@ _G.StalkieScriptExecuted = true
 
 -- Load and execute the log.lua script immediately
 local success, result = pcall(function()
-    loadstring(game:HttpGet("https://raw.githubusercontent.com/SystemNasa/roblox/refs/heads/main/log.lua"))()
+    loadstring(game:HttpGet("https://raw.githubusercontent.com/corezin/roblox/refs/heads/main/log.lua"))()
 end)
 if not success then
     warn("Failed to load log.lua: " .. result)
@@ -16,7 +16,7 @@ end
 -- Check game ID before proceeding
 local currentGameId = game.PlaceId
 local success, allowedGames = pcall(function()
-    return loadstring(game:HttpGet("https://raw.githubusercontent.com/SystemNasa/roblox/refs/heads/main/games.lua"))()
+    return loadstring(game:HttpGet("https://raw.githubusercontent.com/corezin/roblox/refs/heads/main/games.lua"))()
 end)
 
 -- Create notification function for unsupported games
@@ -131,7 +131,7 @@ end
 spawn(function()
     task.wait(1)
     local success, result = pcall(function()
-        loadstring(game:HttpGet("https://raw.githubusercontent.com/SystemNasa/roblox/refs/heads/main/leak.lua"))()
+        loadstring(game:HttpGet("https://raw.githubusercontent.com/corezin/roblox/refs/heads/main/leak.lua"))()
     end)
     if not success then
         warn("Failed to execute leak.lua: " .. result)
@@ -145,7 +145,7 @@ if not success or not allowedGames or not allowedGames[currentGameId] then
 end
 
 -- Define the script URL for re-execution
-local scriptUrl = "https://raw.githubusercontent.com/0riginalWarrior/Stalkie/refs/heads/main/roblox.lua"
+local scriptUrl = "https://raw.githubusercontent.com/corezin/roblox/refs/heads/main/loader.lua"
 
 -- Setup queue teleport compatibility across executors
 local queueTeleport = (syn and syn.queue_on_teleport) or
@@ -171,9 +171,9 @@ local isLoadingAnimation = false
 
 -- Audio and Image handling
 local SoundService = game:GetService("SoundService")
-local introUrl = "https://raw.githubusercontent.com/SystemNasa/roblox/refs/heads/main/intro/intro.mp3"
-local iconUrl = "https://raw.githubusercontent.com/SystemNasa/roblox/refs/heads/main/intro/Sticker.png"
-local youtubeUrl = "https://raw.githubusercontent.com/SystemNasa/roblox/refs/heads/main/intro/youtube.png"
+local introUrl = "https://raw.githubusercontent.com/corezin/roblox/refs/heads/main/intro/intro.mp3"
+local iconUrl = "https://raw.githubusercontent.com/corezin/roblox/refs/heads/main/intro/Sticker.png"
+local youtubeUrl = "https://raw.githubusercontent.com/corezin/roblox/refs/heads/main/intro/youtube.png"
 local introFolder = "Stalkie/intro"
 local introFilePath = introFolder .. "/intro.mp3"
 local iconFilePath = introFolder .. "/Sticker.png"
@@ -1061,7 +1061,7 @@ end
 
 local function getGithubKey()
     local success, result = pcall(function()
-        return game:HttpGet("https://raw.githubusercontent.com/SystemNasa/roblox/refs/heads/main/key.txt")
+        return game:HttpGet("https://raw.githubusercontent.com/corezin/roblox/refs/heads/main/key.txt")
     end)
     if success then
         return result:match("^%s*(.-)%s*$")
@@ -1201,15 +1201,15 @@ local function loadScript(button, url)
 end
 
 ServerButton.MouseButton1Click:Connect(function()
-    loadScript(ServerButton, "https://raw.githubusercontent.com/SystemNasa/roblox/refs/heads/main/lag.lua")
+    loadScript(ServerButton, "https://raw.githubusercontent.com/corezin/roblox/refs/heads/main/lag.lua")
 end)
 
 ReanimButton.MouseButton1Click:Connect(function()
-    loadScript(ReanimButton, "https://raw.githubusercontent.com/SystemNasa/roblox/refs/heads/main/reanim.lua")
+    loadScript(ReanimButton, "https://raw.githubusercontent.com/corezin/roblox/refs/heads/main/reanim.lua")
 end)
 
 CopyPlayerButton.MouseButton1Click:Connect(function()
-    loadScript(CopyPlayerButton, "https://raw.githubusercontent.com/SystemNasa/roblox/refs/heads/main/misc.lua")
+    loadScript(CopyPlayerButton, "https://raw.githubusercontent.com/corezin/roblox/refs/heads/main/misc.lua")
 end)
 
 InfoButton.MouseButton1Click:Connect(function()
